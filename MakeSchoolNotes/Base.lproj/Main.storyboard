@@ -115,6 +115,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="noteContentTextView" destination="xwO-ny-eRI" id="f4a-jN-bsV"/>
+                        <outlet property="noteTitleTextField" destination="5jn-8W-nvM" id="RQ7-le-vL8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J5L-vW-hvd" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="7Je-IY-KPP" userLabel="Exit" sceneMemberID="exit"/>
