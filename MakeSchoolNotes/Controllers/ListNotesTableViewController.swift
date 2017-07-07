@@ -47,11 +47,31 @@ class ListNotesTableViewController: UITableViewController {
         if let identifier = segue.identifier {
             if identifier == "displayNote" {
                 print("Table view cell tapped")
+                
+                // 1
+                let indexPath = tableView.indexPathForSelectedRow!
+                // 2
+                let note = notes[indexPath.row]
+                // 3
+                let displayNoteViewController = segue.destination as! DisplayNoteViewController
+                // 4
+                displayNoteViewController.note = note
+                
             } else if identifier == "addNote" {
                 print("+ button tapped")
             }
         }
     }
+    
+    // 1
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        // 2
+        if editingStyle == .delete {
+            // 3
+            notes.remove(at: indexPath.row)
+        }
+    }
+    
     
     @IBAction func unwindToListNotesViewController(_ segue: UIStoryboardSegue) {
         

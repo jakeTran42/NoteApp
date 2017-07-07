@@ -10,29 +10,28 @@ import UIKit
 
 class DisplayNoteViewController: UIViewController {
     
+    var note: Note?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let identifier = segue.identifier {
-            if identifier == "cancel" {
-                print("Cancel button tapped")
-            } else if identifier == "save" {
-                print("Save button tapped")
-                
+        let listNotesTableViewController = segue.destination as! ListNotesTableViewController
+        if segue.identifier == "save" {
+            if let note = note {
                 // 1
-                let note = Note()
-                // 2
                 note.title = noteTitleTextField.text ?? ""
                 note.content = noteContentTextView.text ?? ""
-                // 3
-                note.modificationTime = Date()
-                
-                // 1
-                let listNotesTableViewController = segue.destination as! ListNotesTableViewController
                 // 2
-                listNotesTableViewController.notes.append(note)
+                listNotesTableViewController.tableView.reloadData()
+            } else {
+                // 3
+                let newNote = Note()
+                newNote.title = noteTitleTextField.text ?? ""
+                newNote.content = noteContentTextView.text ?? ""
+                newNote.modificationTime = Date()
+                listNotesTableViewController.notes.append(newNote)
             }
         }
     }
@@ -41,8 +40,17 @@ class DisplayNoteViewController: UIViewController {
     @IBOutlet weak var noteContentTextView: UITextView!
     @IBOutlet weak var noteTitleTextField: UITextField!
     
-    override func viewWillAppear(_ animated: Bool) { super.viewWillAppear(animated)
-        noteTitleTextField.text = ""
-        noteContentTextView.text = ""
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // 1
+        if let note = note {
+            // 2
+            noteTitleTextField.text = note.title
+            noteContentTextView.text = note.content
+        } else {
+            // 3
+            noteTitleTextField.text = ""
+            noteContentTextView.text = ""
+        }
     }
 }
