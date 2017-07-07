@@ -17,6 +17,7 @@ class ListNotesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        notes = CoreDataHelper.retrieveNotes()
     }
     
     // 1
@@ -38,7 +39,7 @@ class ListNotesTableViewController: UITableViewController {
         cell.noteTitleLabel.text = note.title
         
         // 4
-        cell.noteModificationTimeLabel.text = note.modificationTime.convertToString()
+        cell.noteModificationTimeLabel.text = note.modificationTime?.convertToString()
         
         return cell
     }
@@ -65,18 +66,16 @@ class ListNotesTableViewController: UITableViewController {
     
     // 1
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        // 2
         if editingStyle == .delete {
-            // 3
-            notes.remove(at: indexPath.row)
+            //1
+            CoreDataHelper.delete(note: notes[indexPath.row])
+            //2
+            notes = CoreDataHelper.retrieveNotes()
         }
     }
     
     
-    @IBAction func unwindToListNotesViewController(_ segue: UIStoryboardSegue) {
-        
-        // for now, simply defining the method is sufficient.
-        // we'll add code later
-        
+    @IBAction func unwindToListNotesViewController(_ segue: UIStoryboardSegue){
+        self.notes = CoreDataHelper.retrieveNotes()
     }
 }

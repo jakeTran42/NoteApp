@@ -17,22 +17,13 @@ class DisplayNoteViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let listNotesTableViewController = segue.destination as! ListNotesTableViewController
         if segue.identifier == "save" {
-            if let note = note {
-                // 1
-                note.title = noteTitleTextField.text ?? ""
-                note.content = noteContentTextView.text ?? ""
-                // 2
-                listNotesTableViewController.tableView.reloadData()
-            } else {
-                // 3
-                let newNote = Note()
-                newNote.title = noteTitleTextField.text ?? ""
-                newNote.content = noteContentTextView.text ?? ""
-                newNote.modificationTime = Date()
-                listNotesTableViewController.notes.append(newNote)
-            }
+            // if note exists, update title and content
+            let note = self.note ?? CoreDataHelper.newNote()
+            note.title = noteTitleTextField.text ?? ""
+            note.content = noteContentTextView.text ?? ""
+            note.modificationTime = Date() as NSDate
+            CoreDataHelper.saveNote()
         }
     }
     
